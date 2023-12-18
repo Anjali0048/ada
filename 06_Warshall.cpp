@@ -1,61 +1,44 @@
 #include <iostream>
 #include <vector>
-
 using namespace std;
 
-class Graph {
-public:
-    int systems;
-    vector<vector<bool>> adjacencyMatrix;
-
-    Graph(int n) {
-        systems = n;
-        adjacencyMatrix.resize(n, vector<bool>(n, false));
-    }
-
-    void addConnection(int system1, int system2) {
-        adjacencyMatrix[system1][system2] = true;
-    }
-
-    void warshallTransitiveClosure() {
-        vector<vector<bool>> transitiveClosure(adjacencyMatrix);
-
-        for (int k = 0; k < systems; ++k) {
-            for (int i = 0; i < systems; ++i) {
-                for (int j = 0; j < systems; ++j) {
-                    transitiveClosure[i][j] = transitiveClosure[i][j] || (transitiveClosure[i][k] && transitiveClosure[k][j]);
-                }
+// Function to apply Warshall's algorithm and find the transitive closure
+void transitiveClosure(vector<vector<int>>& graph, int n) {
+    for (int k = 0; k < n; k++) {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                graph[i][j] = graph[i][j] || (graph[i][k] && graph[k][j]);
             }
         }
-
-        cout << "Transitive Closure Matrix:" << endl;
-        for (int i = 0; i < systems; ++i) {
-            for (int j = 0; j < systems; ++j) {
-                cout << transitiveClosure[i][j] << " ";
-            }
-            cout << endl;
-        }
     }
-};
+}
 
 int main() {
-    int numSystems, numConnections;
-    cout << "Enter the number of systems in the network: ";
-    cin >> numSystems;
+    int n;
 
-    cout << "Enter the number of connections in the network: ";
-    cin >> numConnections;
+    // Input: Number of nodes in the graph
+    cout << "Enter the number of nodes in the graph: ";
+    cin >> n;
 
-    Graph network(numSystems);
-
-    cout << "Enter the connections (format: system1 system2):" << endl;
-    for (int i = 0; i < numConnections; ++i) {
-        int system1, system2;
-        cin >> system1 >> system2;
-        network.addConnection(system1, system2);
+    // Input: Adjacency matrix representing the graph
+    cout << "Enter the adjacency matrix (0 or 1) of the graph:\n";
+    vector<vector<int>> graph(n, vector<int>(n, 0));
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            cin >> graph[i][j];
+        }
     }
 
-    network.warshallTransitiveClosure();
+    // Find and display the transitive closure
+    transitiveClosure(graph, n);
 
+    // Display the transitive closure matrix
+    cout << "\nTransitive Closure:\n";
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            cout << graph[i][j] << " ";
+        }
+        cout << "\n";
+    }
     return 0;
 }

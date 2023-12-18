@@ -27,6 +27,13 @@ void insertionSort(int arr[], int n, bool ascending = true) {
     }
 }
 
+void printArray(int arr[], int size)
+{
+    for (int i = 0; i < size; i++) {
+        cout << arr[i] << " ";
+    }
+}
+
 int main() {
     int n;
     cout << "Enter the number of elements: ";
@@ -47,16 +54,13 @@ int main() {
 
     insertionSort(arr1, n, true);
     cout << "Insertion Sort (Ascending): ";
-    for (int i = 0; i < n; ++i) {
-        cout << arr1[i] << " ";
-    }
+    printArray(arr1,n);
     cout << endl;
 
     selectionSort(arr2, n, true);
     cout << "Selection Sort (Ascending): ";
-    for (int i = 0; i < n; ++i) {
-        cout << arr2[i] << " ";
-    }
+    printArray(arr2,n);
+    
     cout << endl;
 
     delete[] arr1;

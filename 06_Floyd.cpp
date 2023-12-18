@@ -1,66 +1,51 @@
 #include <iostream>
-#include <vector>
-#include <limits>
-
+#include <climits>
 using namespace std;
 
-class CityNetwork {
-public:
-    int cities;
-    vector<vector<int>> adjacencyMatrix;
+#define V 4 // Number of cities
 
-    CityNetwork(int n) {
-        cities = n;
-        adjacencyMatrix.resize(n, vector<int>(n, numeric_limits<int>::max()));
-    }
+void floydWarshall(int graph[V][V]) {
+    int dist[V][V];
 
-    void addConnection(int city1, int city2, int distance) {
-        adjacencyMatrix[city1][city2] = distance;
-    }
+    // Initialize the distance matrix with the given graph
+    for (int i = 0; i < V; i++)
+        for (int j = 0; j < V; j++)
+            dist[i][j] = graph[i][j];
 
-    void floydsShortestPaths() {
-        vector<vector<int>> shortestPaths(adjacencyMatrix);
-
-        for (int k = 0; k < cities; ++k) {
-            for (int i = 0; i < cities; ++i) {
-                for (int j = 0; j < cities; ++j) {
-                    if (shortestPaths[i][k] != numeric_limits<int>::max() &&
-                        shortestPaths[k][j] != numeric_limits<int>::max() &&
-                        shortestPaths[i][k] + shortestPaths[k][j] < shortestPaths[i][j]) {
-                        shortestPaths[i][j] = shortestPaths[i][k] + shortestPaths[k][j];
-                    }
+    // Update the distance matrix using all vertices as intermediates
+    for (int k = 0; k < V; k++) {
+        for (int i = 0; i < V; i++) {
+            for (int j = 0; j < V; j++) {
+                if (dist[i][k] != INT_MAX && dist[k][j] != INT_MAX && dist[i][k] + dist[k][j] < dist[i][j]) {
+                    dist[i][j] = dist[i][k] + dist[k][j];
                 }
             }
         }
-
-        cout << "Shortest Paths Matrix:" << endl;
-        for (int i = 0; i < cities; ++i) {
-            for (int j = 0; j < cities; ++j) {
-                cout << (shortestPaths[i][j] == numeric_limits<int>::max() ? "INF" : to_string(shortestPaths[i][j])) << " ";
-            }
-            cout << endl;
-        }
     }
-};
+
+    // Print the shortest distances between all pairs of cities
+    for (int i = 0; i < V; i++) {
+        for (int j = 0; j < V; j++) {
+            if (dist[i][j] == INT_MAX) {
+                cout << "INF\t";
+            } else {
+                cout << dist[i][j] << "\t";
+            }
+        }
+        cout << endl;
+    }
+}
 
 int main() {
-    int numCities, numConnections;
-    cout << "Enter the number of cities in the network: ";
-    cin >> numCities;
+    // Example adjacency matrix representing distances between cities
+    int graph[V][V] = {
+        {0, 5, INT_MAX, 10},
+        {INT_MAX, 0, 3, INT_MAX},
+        {INT_MAX, INT_MAX, 0, 1},
+        {INT_MAX, INT_MAX, INT_MAX, 0}
+    };
 
-    cout << "Enter the number of connections in the network: ";
-    cin >> numConnections;
-
-    CityNetwork network(numCities);
-
-    cout << "Enter the connections and distances (format: city1 city2 distance):" << endl;
-    for (int i = 0; i < numConnections; ++i) {
-        int city1, city2, distance;
-        cin >> city1 >> city2 >> distance;
-        network.addConnection(city1, city2, distance);
-    }
-
-    network.floydsShortestPaths();
+    floydWarshall(graph);
 
     return 0;
 }
