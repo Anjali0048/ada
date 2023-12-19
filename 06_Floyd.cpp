@@ -1,10 +1,11 @@
 #include <iostream>
 #include <climits>
+#include <vector>
 using namespace std;
 
 #define V 4 // Number of cities
 
-void floydWarshall(int graph[V][V]) {
+void floyd(int graph[V][V]) {
     int dist[V][V];
 
     // Initialize the distance matrix with the given graph
@@ -36,6 +37,18 @@ void floydWarshall(int graph[V][V]) {
     }
 }
 
+    // warshall
+    void transitiveClosure(vector<vector<int>>& graph, int n) {
+        for (int k = 0; k < n; k++) {
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    graph[i][j] = graph[i][j] || (graph[i][k] && graph[k][j]);
+                }
+            }
+        }
+    }
+
+
 int main() {
     // Example adjacency matrix representing distances between cities
     int graph[V][V] = {
@@ -45,7 +58,37 @@ int main() {
         {INT_MAX, INT_MAX, INT_MAX, 0}
     };
 
-    floydWarshall(graph);
+    floyd(graph);
 
     return 0;
 }
+
+
+// warshall
+// int main() {
+//     int n;
+//     cout << "Enter the number of nodes in the graph: ";
+//     cin >> n;
+
+//     // Input: Adjacency matrix representing the graph
+//     cout << "Enter the adjacency matrix (0 or 1) of the graph:\n";
+//     vector<vector<int>> graph(n, vector<int>(n, 0));
+//     for (int i = 0; i < n; i++) {
+//         for (int j = 0; j < n; j++) {
+//             cin >> graph[i][j];
+//         }
+//     }
+
+//     // Find and display the transitive closure
+//     transitiveClosure(graph, n);
+
+//     // Display the transitive closure matrix
+//     cout << "\nTransitive Closure:\n";
+//     for (int i = 0; i < n; i++) {
+//         for (int j = 0; j < n; j++) {
+//             cout << graph[i][j] << " ";
+//         }
+//         cout << "\n";
+//     }
+//     return 0;
+// }
