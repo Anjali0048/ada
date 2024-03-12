@@ -1,11 +1,11 @@
 #include <iostream>
 using namespace std;
 
-void selectionSort(int arr[], int n, bool ascending = true) {
+void selectionSort(int arr[], int n) {
     for (int i = 0; i < n - 1; ++i) {
         int minIndex = i;
         for (int j = i + 1; j < n; ++j) {
-            if ((ascending && arr[j] < arr[minIndex]) || (!ascending && arr[j] > arr[minIndex])) {
+            if (arr[j] < arr[minIndex] ) {
                 minIndex = j;
             }
         }
@@ -13,12 +13,12 @@ void selectionSort(int arr[], int n, bool ascending = true) {
     }
 }
 
-void insertionSort(int arr[], int n, bool ascending = true) {
+void insertionSort(int arr[], int n) {
     for (int i = 1; i < n; ++i) {
         int key = arr[i];
         int j = i - 1;
 
-        while (j >= 0 && ((ascending && key < arr[j]) || (!ascending && key > arr[j]))) {
+        while (j >= 0 && key < arr[j]) {
             arr[j + 1] = arr[j];
             --j;
         }
@@ -52,12 +52,12 @@ int main() {
         cin >> arr2[i];
     }
 
-    insertionSort(arr1, n, true);
+    insertionSort(arr1, n);
     cout << "Insertion Sort (Ascending): ";
     printArray(arr1,n);
     cout << endl;
 
-    selectionSort(arr2, n, true);
+    selectionSort(arr2, n);
     cout << "Selection Sort (Ascending): ";
     printArray(arr2,n);
     

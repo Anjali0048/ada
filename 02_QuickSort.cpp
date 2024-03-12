@@ -31,23 +31,23 @@ void quicksort(vector<int>& arr, int low, int high) {
 
 int main() {
     int n;
-    cout << "Enter the number of files: ";
+    cout << "Enter the number of ele: ";
     cin >> n;
 
-    vector<int> fileIDs(n);
+    vector<int> arr(n);
 
-    cout << "Enter the file IDs: ";
+    cout << "Enter the ele : ";
     for (int i = 0; i < n; ++i) {
-        cin >> fileIDs[i];
+        cin >> arr[i];
     }
 
     // Perform quicksort
-    quicksort(fileIDs, 0, n - 1);
+    quicksort(arr, 0, n - 1);
 
-    // Display sorted file IDs
+    // Display sorted list
     cout << "Quicksort Result: ";
     for (int i = 0; i < n; ++i) {
-        cout << fileIDs[i] << " ";
+        cout << arr[i] << " ";
     }
 
     return 0;

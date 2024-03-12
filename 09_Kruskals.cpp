@@ -1,90 +1,92 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
+#include <bits/stdc++.h> 
+using namespace std; 
 
-using namespace std;
+class DSU { 
+	int* parent; 
+	int* rank; 
 
-class RoadNetwork {
-public:
-    int towns;
-    vector<vector<int>> roads; // {cost, town1, town2}
+public: 
+	DSU(int n) { 
+		parent = new int[n]; 
+		rank = new int[n]; 
 
-    RoadNetwork(int n) : towns(n) {}
+		for (int i = 0; i < n; i++) { 
+			parent[i] = -1; 
+			rank[i] = 1; 
+		} 
+	} 
 
-    void addRoad(int town1, int town2, int cost) {
-        roads.push_back({cost, town1, town2});
-    }
+	int find(int i) { 
+		if (parent[i] == -1) 
+			return i; 
 
-    // Find operation with path compression
-    int findParent(vector<int>& parent, int town) {
-        if (parent[town] == town)
-            return town;
-        return parent[town] = findParent(parent, parent[town]);
-    }
+		return parent[i] = find(parent[i]); 
+	} 
 
-    // Union operation with rank
-    void unionSets(vector<int>& parent, vector<int>& rank, int town1, int town2) {
-        int root1 = findParent(parent, town1);
-        int root2 = findParent(parent, town2);
+	void unite(int x, int y) { 
+		int s1 = find(x); 
+		int s2 = find(y); 
 
-        if (root1 != root2) {
-            if (rank[root1] < rank[root2])
-                swap(root1, root2);
-            parent[root2] = root1;
-            if (rank[root1] == rank[root2])
-                rank[root1]++;
-        }
-    }
+		if (s1 != s2) { 
+			if (rank[s1] < rank[s2]) { 
+				parent[s1] = s2; 
+			} 
+			else if (rank[s1] > rank[s2]) { 
+				parent[s2] = s1; 
+			} 
+			else { 
+				parent[s2] = s1; 
+				rank[s1] += 1; 
+			} 
+		} 
+	} 
+}; 
 
-    void kruskalMST() {
-        // Sort roads by cost in ascending order
-        sort(roads.begin(), roads.end());
+class Graph { 
+	vector<vector<int> > edgelist; 
+	int V; 
 
-        vector<int> parent(towns);
-        vector<int> rank(towns, 0);
+public: 
+	Graph(int V) { 
+        this->V = V; 
+    } 
 
-        // Initialize parent array
-        for (int i = 0; i < towns; ++i) {
-            parent[i] = i;
-        }
+	void addEdge(int x, int y, int w) { 
+		edgelist.push_back({ w, x, y }); 
+	} 
 
-        cout << "Least Expensive Tree of Roads (Kruskal's Algorithm):" << endl;
+	void kruskals_mst() { 
+		sort(edgelist.begin(), edgelist.end()); 
 
-        int totalCost = 0;
-        for (const auto& road : roads) {
-            int cost = road[0];
-            int town1 = road[1];
-            int town2 = road[2];
+		DSU s(V); 
+		int ans = 0; 
+		cout << "Following are the edges in the constructed MST" << endl; 
+		for (auto edge : edgelist) { 
+			int w = edge[0]; 
+			int x = edge[1]; 
+			int y = edge[2]; 
 
-            if (findParent(parent, town1) != findParent(parent, town2)) {
-                cout << "Road between Town " << town1 << " and Town " << town2 << " with cost " << cost << endl;
-                totalCost += cost;
-                unionSets(parent, rank, town1, town2);
-            }
-        }
+			// Take this edge in MST if it does not forms a cycle 
+			if (s.find(x) != s.find(y)) { 
+				s.unite(x, y); 
+				ans += w; 
+				cout << x << " -- " << y << " == " << w << endl; 
+			} 
+		} 
+		cout << "Minimum Cost Spanning Tree: " << ans; 
+	} 
+}; 
 
-        cout << "Total Cost of the Road Network: " << totalCost << endl;
-    }
-};
+int main() 
+{ 
+	Graph g(4); 
+	g.addEdge(0, 1, 10); 
+	g.addEdge(1, 3, 15); 
+	g.addEdge(2, 3, 4); 
+	g.addEdge(2, 0, 6); 
+	g.addEdge(0, 3, 5); 
 
-int main() {
-    int numTowns, numRoads;
-    cout << "Enter the number of towns in the road network: ";
-    cin >> numTowns;
+	g.kruskals_mst(); 
 
-    cout << "Enter the number of roads in the network: ";
-    cin >> numRoads;
-
-    RoadNetwork network(numTowns);
-
-    cout << "Enter the roads and their costs (format: town1 town2 cost):" << endl;
-    for (int i = 0; i < numRoads; ++i) {
-        int town1, town2, cost;
-        cin >> town1 >> town2 >> cost;
-        network.addRoad(town1, town2, cost);
-    }
-
-    network.kruskalMST();
-
-    return 0;
+	return 0; 
 }

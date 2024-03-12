@@ -3,18 +3,15 @@ using namespace std;
 
 void heapify(int arr[], int n, int i){
 	int largest = i;
-	int left = 2*i + 1;    // left node
-	int right = 2*i + 2;   // right node
+	int left = 2*i + 1;    
+	int right = 2*i + 2;  
 	
-	// if left child is greater than node
 	if(left < n && arr[left]>arr[largest]){
 		largest = left;
 	}
-	// if right child is greater than node
 	if(right < n && arr[right]>arr[largest]){
 		largest = right;
 	}
-	// if largest is not root
 	if(largest != i){
 		swap(arr[i], arr[largest]);
 		heapify(arr,n, largest);
@@ -36,7 +33,6 @@ void heapSort(int arr[], int n){
 	}
 }
 
-// function to print the array
 void print(int arr[], int n){
 	for(int i=0; i<n; i++){
 		cout << arr[i] << " " ;

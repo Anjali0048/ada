@@ -1,66 +1,39 @@
 #include <iostream>
+#include <queue>
 #include <vector>
-#include <unordered_set>
+#include <map>
+#include <list>
 
 using namespace std;
 
-class Network {
-public:
-    int systems;
-    vector<unordered_set<int>> adjacencyList;
-
-    Network(int n) {
-        systems = n;
-        adjacencyList.resize(n);
+void dfs(int s, vector<vector<int>> g, vector<bool> &vis){
+    cout<<s<<" ";
+    vis[s] = true;
+    
+    for(int i=0; i<g[s].size(); i++){
+        if(!vis[g[s][i]])
+            dfs(g[s][i], g, vis);
     }
+}
 
-    void addConnection(int system1, int system2) {
-        adjacencyList[system1].insert(system2);
-        adjacencyList[system2].insert(system1);  // Assuming an undirected network
-    }
-
-    void DFS(int startSystem, vector<bool>& visited) {
-        cout << startSystem << " ";
-        visited[startSystem] = true;
-
-        for (int neighbor : adjacencyList[startSystem]) {
-            if (!visited[neighbor]) {
-                DFS(neighbor, visited);
-            }
+int main()
+{   
+        int N, E;
+        cin>>N>>E;
+        
+        vector<vector<int>> g(N);
+        vector<bool> vis(N,0);
+        
+        for(int i=0;i<E;i++)
+        {
+            int u,v;
+            cin>>u>>v;
+            g[u].push_back(v);
+            g[v].push_back(u);
         }
-    }
 
-    void reachableSystems(int startSystem) {
-        vector<bool> visited(systems, false);
+        dfs(0,g,vis);
+        
+        cout<<endl;
 
-        cout << "Systems reachable from system " << startSystem << " using DFS: ";
-        DFS(startSystem, visited);
-        cout << endl;
-    }
-};
-
-int main() {
-    int numSystems, numConnections;
-    cout << "Enter the number of systems in the network: ";
-    cin >> numSystems;
-
-    cout << "Enter the number of connections in the network: ";
-    cin >> numConnections;
-
-    Network network(numSystems);
-
-    cout << "Enter the connections (format: system1 system2):" << endl;
-    for (int i = 0; i < numConnections; ++i) {
-        int system1, system2;
-        cin >> system1 >> system2;
-        network.addConnection(system1, system2);
-    }
-
-    int startSystem;
-    cout << "Enter the starting system: ";
-    cin >> startSystem;
-
-    network.reachableSystems(startSystem);
-
-    return 0;
 }

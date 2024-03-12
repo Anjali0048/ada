@@ -39,7 +39,7 @@ void merge(vector<int>& arr, int left, int mid, int right) {
         j++;
         k++;
     }
-}
+} 
 
 // Merge sort function
 void mergeSort(vector<int>& arr, int left, int right) {
@@ -55,23 +55,23 @@ void mergeSort(vector<int>& arr, int left, int right) {
 
 int main() {
     int n;
-    cout << "Enter the number of files: ";
+    cout << "Enter the number of ele: ";
     cin >> n;
 
-    vector<int> fileIDs(n);
+    vector<int> arr(n);
 
-    cout << "Enter the file IDs: ";
+    cout << "Enter the numbers: ";
     for (int i = 0; i < n; ++i) {
-        cin >> fileIDs[i];
+        cin >> arr[i];
     }
 
     // Perform merge sort
-    mergeSort(fileIDs, 0, n - 1);
+    mergeSort(arr, 0, n - 1);
 
     // Display sorted file IDs
     cout << "Merge Sort Result: ";
     for (int i = 0; i < n; ++i) {
-        cout << fileIDs[i] << " ";
+        cout << arr[i] << " ";
     }
 
     return 0;

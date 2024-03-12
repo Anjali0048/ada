@@ -19,10 +19,9 @@ void printSolution(int dist[])
 {
 	cout << "Vertex \t Distance from Source" << endl;
 	for (int i = 0; i < V; i++)
-		cout << i << " \t\t\t\t" << dist[i] << endl;
+		cout << i << " \t" << dist[i] << endl;
 }
 
-// adjacency matrix representation
 void dijkstra(int graph[V][V], int src)
 {
 	int dist[V];
@@ -31,7 +30,6 @@ void dijkstra(int graph[V][V], int src)
 	for (int i = 0; i < V; i++)
 		dist[i] = INT_MAX, sptSet[i] = false;
 
-	// Distance of source vertex from itself is always 0
 	dist[src] = 0;
 
 	// Find shortest path for all vertices
