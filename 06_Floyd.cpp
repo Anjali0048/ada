@@ -48,9 +48,7 @@ void transitiveClosure(vector<vector<int>>& graph, int n) {
     }
 }
 
-
 int main() {
-    // Example adjacency matrix representing distances between cities
     int graph[V][V] = {
         {0, 5, INT_MAX, 10},
         {INT_MAX, 0, 3, INT_MAX},

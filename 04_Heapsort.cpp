@@ -20,15 +20,11 @@ void heapify(int arr[], int n, int i){
 
 void heapSort(int arr[], int n){
 	
-	// building heap
 	for(int i=n/2-1; i>=0; i--){
 		heapify(arr,n,i);
 	}
-	// extract ele from heap one by one
 	for(int i=n-1; i>=0; i--){
-		// swap the root node and the last leaf node
 		swap(arr[0],arr[i]);
-		// call heapify on reduced heap
 		heapify(arr,i,0);
 	}
 }

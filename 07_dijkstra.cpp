@@ -5,7 +5,6 @@ using namespace std;
 
 int minDistance(int dist[], bool sptSet[])
 {
-
 	int min = INT_MAX, min_index;
 
 	for (int v = 0; v < V; v++)
